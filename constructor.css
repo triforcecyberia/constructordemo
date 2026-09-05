@@ -1,0 +1,214 @@
+/* ═══════════════════════════════════════
+   КОНСТРУКТОР ТЕМЫ — UI панели настроек
+   Не относится к дизайну самого лендинга,
+   поэтому используется отдельный, узнаваемый стиль.
+   ═══════════════════════════════════════ */
+
+#ctor-root {
+  --ctor-bg: #121212;
+  --ctor-bg2: #1b1b1b;
+  --ctor-border: rgba(255,255,255,0.09);
+  --ctor-text: #eee;
+  --ctor-sub: #8a8a8a;
+  --ctor-accent: #FFC812;
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+
+/* ── FAB ── */
+.ctor-fab {
+  position: fixed; right: 24px; bottom: 24px; z-index: 1500;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--ctor-accent, #FFC812); color: #111;
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.ctor-fab:hover { transform: translateY(-3px) rotate(12deg); box-shadow: 0 10px 28px rgba(0,0,0,0.5); }
+.ctor-fab svg { width: 24px; height: 24px; }
+.ctor-fab-ring {
+  position: absolute; inset: -6px; border-radius: 50%;
+  border: 2px solid var(--ctor-accent, #FFC812); opacity: 0.55;
+  animation: ctor-pulse-ring 2.2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes ctor-pulse-ring {
+  0%   { transform: scale(0.85); opacity: 0.55; }
+  70%  { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+.ctor-fab.ctor-fab--dimmed .ctor-fab-ring { display: none; }
+
+/* ── подсказка-пузырь при первом заходе ── */
+.ctor-hint {
+  position: fixed; right: 24px; bottom: 90px; z-index: 1500;
+  max-width: 240px; background: var(--ctor-bg2);
+  border: 1px solid var(--ctor-border); color: var(--ctor-text);
+  padding: 14px 16px; border-radius: 14px; font-size: 13px; line-height: 1.5;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  transform: translateY(8px) scale(0.96); opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.ctor-hint.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.ctor-hint b { color: var(--ctor-accent); }
+.ctor-hint-close {
+  position: absolute; top: 6px; right: 8px; background: none; border: none;
+  color: var(--ctor-sub); font-size: 15px; cursor: pointer; line-height: 1;
+}
+
+/* ── затемнение фона при открытой панели ── */
+.ctor-scrim {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 1400; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.ctor-scrim.open { opacity: 1; pointer-events: auto; }
+
+/* ── панель-шторка ── */
+.ctor-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 1600;
+  width: 380px; max-width: 92vw;
+  background: var(--ctor-bg); color: var(--ctor-text);
+  border-left: 1px solid var(--ctor-border);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex; flex-direction: column;
+  box-shadow: -20px 0 60px rgba(0,0,0,0.5);
+}
+.ctor-panel.open { transform: translateX(0); }
+
+.ctor-panel-head {
+  padding: 22px 22px 16px; border-bottom: 1px solid var(--ctor-border);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.ctor-panel-head h2 {
+  font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 700;
+  letter-spacing: 0.01em; margin-bottom: 6px; color: var(--ctor-text);
+}
+.ctor-panel-head p { font-size: 12.5px; color: var(--ctor-sub); line-height: 1.55; }
+.ctor-panel-close {
+  flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px;
+  background: var(--ctor-bg2); border: 1px solid var(--ctor-border); color: var(--ctor-text);
+  cursor: pointer; font-size: 16px; line-height: 1;
+}
+.ctor-panel-close:hover { border-color: var(--ctor-accent); color: var(--ctor-accent); }
+
+.ctor-panel-body { flex: 1; overflow-y: auto; padding: 8px 22px 22px; }
+.ctor-panel-body::-webkit-scrollbar { width: 4px; }
+.ctor-panel-body::-webkit-scrollbar-thumb { background: var(--ctor-border); border-radius: 2px; }
+
+.ctor-group { padding: 20px 0; border-bottom: 1px solid var(--ctor-border); }
+.ctor-group:last-child { border-bottom: none; }
+.ctor-group-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ctor-sub); margin-bottom: 14px;
+}
+
+/* цветовые пресеты */
+.ctor-swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ctor-swatch {
+  border: 1.5px solid var(--ctor-border); background: var(--ctor-bg2);
+  border-radius: 12px; padding: 10px 8px 8px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.ctor-swatch:hover { transform: translateY(-2px); }
+.ctor-swatch.active { border-color: var(--ctor-accent); }
+.ctor-swatch-dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.ctor-swatch span { font-size: 10.5px; color: var(--ctor-sub); text-align: center; line-height: 1.3; }
+.ctor-swatch.active span { color: var(--ctor-text); }
+
+.ctor-custom-row {
+  display: flex; align-items: center; gap: 10px; margin-top: 14px;
+}
+.ctor-custom-row label { font-size: 12px; color: var(--ctor-sub); flex: 1; }
+.ctor-color-input {
+  -webkit-appearance: none; appearance: none;
+  width: 36px; height: 36px; border: none; border-radius: 10px;
+  background: none; cursor: pointer; padding: 0;
+}
+.ctor-color-input::-webkit-color-swatch-wrapper { padding: 0; }
+.ctor-color-input::-webkit-color-swatch { border: 1.5px solid var(--ctor-border); border-radius: 10px; }
+
+/* шрифтовые пары */
+.ctor-fonts { display: flex; flex-direction: column; gap: 8px; }
+.ctor-font-chip {
+  display: flex; align-items: center; justify-content: space-between;
+  border: 1.5px solid var(--ctor-border); background: var(--ctor-bg2);
+  border-radius: 10px; padding: 10px 14px; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.ctor-font-chip:hover { border-color: rgba(255,200,18,0.4); }
+.ctor-font-chip.active { border-color: var(--ctor-accent); }
+.ctor-font-chip .ctor-font-name { font-size: 12.5px; color: var(--ctor-text); font-weight: 600; }
+.ctor-font-chip .ctor-font-sample { font-size: 15px; color: var(--ctor-sub); }
+.ctor-font-chip.active .ctor-font-sample { color: var(--ctor-accent); }
+
+/* сегментированные переключатели (форма кнопок) */
+.ctor-seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.ctor-seg button {
+  border: 1.5px solid var(--ctor-border); background: var(--ctor-bg2); color: var(--ctor-sub);
+  padding: 9px 4px; font-size: 11.5px; font-weight: 600; cursor: pointer;
+  border-radius: 8px; transition: border-color 0.2s, color 0.2s;
+}
+.ctor-seg button.active { border-color: var(--ctor-accent); color: var(--ctor-text); }
+.ctor-seg-preview { display: inline-block; width: 22px; height: 14px; background: currentColor; margin-bottom: 5px; }
+
+/* слайдеры */
+.ctor-slider-row { margin-bottom: 16px; }
+.ctor-slider-row:last-child { margin-bottom: 0; }
+.ctor-slider-label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 12.5px; color: var(--ctor-text); margin-bottom: 8px;
+}
+.ctor-slider-label span:last-child { color: var(--ctor-sub); font-size: 11px; }
+.ctor-slider {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 4px;
+  border-radius: 2px; background: var(--ctor-border); outline: none; cursor: pointer;
+}
+.ctor-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--ctor-accent); cursor: pointer; border: 3px solid var(--ctor-bg);
+  box-shadow: 0 0 0 1px var(--ctor-accent);
+}
+.ctor-slider::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--ctor-accent); cursor: pointer; border: 3px solid var(--ctor-bg);
+}
+.ctor-slider-ticks { display: flex; justify-content: space-between; font-size: 10px; color: var(--ctor-sub); margin-top: 5px; }
+
+/* низ панели */
+.ctor-panel-foot {
+  padding: 16px 22px 20px; border-top: 1px solid var(--ctor-border);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ctor-reset {
+  background: none; border: 1px solid var(--ctor-border); color: var(--ctor-sub);
+  padding: 10px; border-radius: 8px; font-size: 12px; cursor: pointer; font-weight: 600;
+  transition: border-color 0.2s, color 0.2s;
+}
+.ctor-reset:hover { border-color: var(--ctor-text); color: var(--ctor-text); }
+.ctor-cta {
+  display: block; text-align: center; background: var(--ctor-accent); color: #111;
+  padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700;
+  text-decoration: none;
+}
+
+/* бейдж "демо-шаблон" рядом с FAB на десктопе */
+.ctor-badge {
+  position: fixed; right: 90px; bottom: 40px; z-index: 1400;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #111; background: var(--ctor-accent);
+  padding: 6px 12px; border-radius: 100px;
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .ctor-badge { display: none; }
+  .ctor-hint { right: 16px; left: 16px; max-width: none; bottom: 92px; }
+  .ctor-fab { right: 16px; bottom: 16px; }
+}

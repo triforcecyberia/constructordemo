@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELOR — Detailing Lab | Демо-шаблон сайта для детейлинг-студий</title>
+<meta name="description" content="Демонстрационный шаблон лендинга для детейлинг-центра с встроенным конструктором темы: меняйте цвета, шрифты, скругления и анимации в реальном времени.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="constructor.css">
+<style>
+/* ═══════════ INDEX-SPECIFIC ═══════════ */
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding: 120px 5% 80px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--black) 0%, var(--dark) 50%, var(--black) 100%);
+}
+.hero-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 65% 50%, color-mix(in srgb, var(--gold) 7%, transparent) 0%, transparent 65%);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--gold) 3.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--gold) 3.5%, transparent) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+}
+.hero-car-img {
+  position: absolute; right: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 52%; height: 82%;
+  object-fit: cover; object-position: center;
+  mask-image: linear-gradient(to left, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+  opacity: 0.5;
+  animation: fadeIn 1.2s ease both 0.3s;
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 660px;
+  animation: fadeUp 0.9s ease both;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+  border-radius: 100px; padding: 5px 16px; margin-bottom: 28px;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); animation: pulse 2s infinite;
+}
+.hero-badge span { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5.5vw, 68px);
+  font-weight: 900; line-height: 1.05;
+  letter-spacing: -0.02em; margin-bottom: 20px;
+}
+.hero-title .accent { color: var(--gold); }
+.hero-desc { font-size: 15px; line-height: 1.75; color: var(--gray); margin-bottom: 36px; max-width: 480px; }
+
+.hero-checks {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px;
+}
+.hero-check {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--lgray);
+}
+.hero-check::before { content: '✓'; color: var(--gold); font-weight: 700; }
+
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.hero-stats {
+  display: flex; gap: 40px; margin-top: 52px;
+  padding-top: 28px; border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 700; color: var(--gold);
+}
+.stat-label { font-size: 11px; color: var(--gray); margin-top: 2px; }
+
+/* WHY */
+.why { background: var(--dark); }
+.why-inner { max-width: 1400px; margin: 0 auto; }
+.why-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; margin-top: 48px;
+  border: 1px solid var(--border); border-radius: calc(14px * var(--radius-mult)); overflow: hidden;
+}
+.why-card {
+  background: var(--card); padding: 32px 26px;
+  transition: background calc(0.3s * var(--dur-mult)); position: relative;
+}
+.why-card::after {
+  content: ''; position: absolute; bottom: 0; left: 26px; right: 26px;
+  height: 2px; background: var(--gold);
+  transform: scaleX(0); transition: transform calc(0.3s * var(--dur-mult));
+}
+.why-card:hover { background: var(--card2); }
+.why-card:hover::after { transform: scaleX(1); }
+.why-icon { font-size: 28px; margin-bottom: 14px; }
+.why-card h3 { font-family: var(--font-display); font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.why-card p { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+/* SERVICES CARDS */
+.services-section { background: var(--black); }
+.services-inner { max-width: 1400px; margin: 0 auto; }
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: calc(16px * var(--space-mult)); margin-top: 48px;
+}
+.service-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(12px * var(--radius-mult)); overflow: hidden;
+  transition: border-color calc(0.3s * var(--dur-mult)), transform calc(0.3s * var(--dur-mult));
+  text-decoration: none; color: var(--white);
+  display: flex; flex-direction: column;
+}
+.service-card:hover { border-color: color-mix(in srgb, var(--gold) 40%, transparent); transform: translateY(-4px); }
+.service-card-icon {
+  width: 100%; height: 180px; display: flex; align-items: center; justify-content: center;
+  font-size: 48px; background: linear-gradient(135deg, var(--card), var(--card2));
+}
+.service-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.service-card-title {
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 700;
+  text-transform: uppercase; margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+.service-card-desc { font-size: 12px; color: var(--gray); line-height: 1.6; flex: 1; }
+.service-card-price {
+  margin-top: 16px; font-family: var(--font-display);
+  font-size: 15px; font-weight: 700; color: var(--gold);
+  display: flex; align-items: center; gap: 4px;
+}
+.service-card-price::after { content: '↗'; font-size: 13px; }
+
+/* WORKS / GALLERY */
+.works-section { background: var(--dark); }
+.works-inner { max-width: 1400px; margin: 0 auto; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 200px 200px;
+  gap: calc(8px * var(--space-mult)); margin-top: 48px;
+}
+.gallery-item {
+  overflow: hidden; border-radius: calc(8px * var(--radius-mult));
+  position: relative; cursor: pointer;
+}
+.gallery-item:first-child { grid-column: span 2; grid-row: span 2; }
+.gallery-item img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform calc(0.5s * var(--dur-mult)); display: block;
+}
+.gallery-item:hover img { transform: scale(1.06); }
+.gallery-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+  opacity: 0; transition: opacity calc(0.3s * var(--dur-mult));
+  display: flex; align-items: flex-end; padding: 14px;
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-overlay span { font-size: 12px; color: var(--gold); font-weight: 600; }
+.works-cta { text-align: center; margin-top: 36px; }
+
+/* ABOUT */
+.about-section { background: var(--black); }
+.about-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center;
+}
+.about-text ul { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+.about-text li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: var(--lgray); line-height: 1.6; }
+.about-text li::before { content: '◆'; color: var(--gold); font-size: 8px; margin-top: 4px; flex-shrink: 0; }
+.about-imgs {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; border-radius: calc(12px * var(--radius-mult)); overflow: hidden;
+}
+.about-imgs img { width: 100%; height: 190px; object-fit: cover; display: block; }
+.about-imgs img:last-child { grid-column: span 2; height: 180px; }
+
+/* REVIEWS */
+.reviews-section { background: var(--dark); }
+.reviews-inner { max-width: 1400px; margin: 0 auto; }
+.reviews-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: calc(14px * var(--space-mult)); margin-top: 48px;
+}
+.review-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: calc(12px * var(--radius-mult)); padding: 26px;
+  transition: border-color calc(0.3s * var(--dur-mult));
+}
+.review-card:hover { border-color: color-mix(in srgb, var(--gold) 30%, transparent); }
+.review-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.review-avatar {
+  width: 32px; height: 32px; border-radius: calc(8px * var(--radius-mult));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; flex-shrink: 0; color: #fff;
+}
+.av-ya { background: #FC3F1D; }
+.av-go { background: #4285f4; }
+.av-2g { background: #25A44E; }
+.review-name { font-size: 13px; font-weight: 600; }
+.review-platform { font-size: 11px; color: var(--gray); }
+.review-stars { color: #f59e0b; font-size: 13px; margin-bottom: 10px; }
+.review-text { font-size: 13px; color: var(--lgray); line-height: 1.7; }
+.review-date { margin-top: 14px; font-size: 11px; color: var(--gray); }
+
+.ratings-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 10px; margin-top: 32px; padding: 24px;
+  background: var(--card); border-radius: calc(12px * var(--radius-mult)); border: 1px solid var(--border);
+}
+.rating-item { text-align: center; }
+.rating-name { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+.rating-stars { color: #f59e0b; font-size: 13px; margin-bottom: 8px; }
+.rating-link { font-size: 11px; color: var(--gold); text-decoration: none; letter-spacing: 0.05em; }
+
+/* CTA STRIP */
+.cta-strip {
+  padding: calc(60px * var(--space-mult)) 5%; background: var(--gold);
+  text-align: center;
+}
+.cta-strip h2 {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3vw, 36px);
+  color: var(--ink); margin-bottom: 8px;
+}
+.cta-strip p { color: color-mix(in srgb, var(--ink) 65%, transparent); font-size: 14px; margin-bottom: 28px; }
+.cta-strip .btn-dark {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--ink); color: var(--white);
+  padding: 14px 36px; border-radius: var(--btn-radius-override, calc(8px * var(--radius-mult)));
+  font-weight: 700; font-size: 14px; text-decoration: none;
+  border: none; cursor: pointer; font-family: var(--font-body);
+  transition: opacity calc(0.2s * var(--dur-mult));
+}
+.cta-strip .btn-dark:hover { opacity: 0.8; }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .why-grid { grid-template-columns: repeat(2, 1fr); }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-inner { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+  .gallery-item:first-child { grid-column: span 2; grid-row: span 1; }
+}
+@media (max-width: 768px) {
+  .hero { padding-top: 100px; }
+  .hero-car-img { display: none; }
+  .why-grid { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: 1fr; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .ratings-bar { grid-template-columns: repeat(2, 1fr); }
+  .hero-stats { gap: 24px; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-item:first-child { grid-column: span 1; }
+}
+
+/* ═══════════ BEFORE / AFTER SLIDERS ═══════════ */
+.ba-section { background: var(--black); }
+.ba-inner { max-width: 1400px; margin: 0 auto; }
+
+.ba-slider-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(20px * var(--space-mult));
+  margin-top: 48px;
+}
+
+.ba-card {
+  border-radius: calc(12px * var(--radius-mult));
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card);
+  transition: border-color calc(0.3s * var(--dur-mult));
+}
+.ba-card:hover { border-color: color-mix(in srgb, var(--gold) 35%, transparent); }
+
+.ba-label-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--card2);
+  border-bottom: 1px solid var(--border);
+}
+.ba-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: calc(100px * var(--radius-mult));
+}
+.before-tag { background: color-mix(in srgb, var(--white) 8%, transparent); color: var(--gray); }
+.after-tag  { background: color-mix(in srgb, var(--gold) 15%, transparent); color: var(--gold); }
+.ba-title-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--lgray);
+  text-align: center;
+  flex: 1;
+  padding: 0 8px;
+}
+
+.ba-slider {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+.ba-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.ba-after-wrap {
+  position: absolute;
+  top: 0; left: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: none;
+}
+.ba-after-wrap .ba-img { width: 100%; min-width: 0; }
+
+.ba-handle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+.ba-handle-line {
+  flex: 1;
+  width: 2px;
+  background: var(--gold);
+  opacity: 0.9;
+}
+.ba-handle-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--gold) 50%, transparent);
+}
+
+@keyframes ba-hint {
+  0%   { left: 50%; }
+  30%  { left: 35%; }
+  70%  { left: 65%; }
+  100% { left: 50%; }
+}
+.ba-slider.hint .ba-handle      { animation: ba-hint-handle 1.6s ease forwards; }
+.ba-slider.hint .ba-after-wrap  { animation: ba-hint-wrap   1.6s ease forwards; }
+@keyframes ba-hint-handle {
+  0%   { left: 50%; }
+  30%  { left: 32%; }
+  70%  { left: 68%; }
+  100% { left: 50%; }
+}
+@keyframes ba-hint-wrap {
+  0%   { width: 50%; }
+  30%  { width: 32%; }
+  70%  { width: 68%; }
+  100% { width: 50%; }
+}
+
+@media (max-width: 1024px) {
+  .ba-slider-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .ba-slider-row { grid-template-columns: 1fr; }
+  .ba-slider { height: 220px; }
+}
+
+/* ── карта-заглушка в контактах ── */
+.map-placeholder {
+  background: var(--dark); border: 1px solid var(--border);
+  border-radius: calc(16px * var(--radius-mult)); overflow: hidden;
+  min-height: 380px; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; text-align: center; padding: 20px;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--white) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--white) 4%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.map-placeholder .map-pin { font-size: 34px; }
+.map-placeholder p { font-size: 13px; color: var(--gray); max-width: 260px; line-height: 1.6; }
+.map-placeholder .map-note { font-size: 11px; color: var(--gray); opacity: 0.7; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAVBAR ═══════════ -->
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="#home" class="nav-logo">
+      <div>
+        <span class="nav-logo-text">VELOR</span>
+        <span class="nav-logo-sub">Detailing Lab</span>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#home" class="active">Главная</a></li>
+      <li><a href="#" onclick="return false">Прайс</a></li>
+      <li><a href="#works">Работы</a></li>
+      <li><a href="#" onclick="return false">Акции</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="nav-menu-btn" onclick="toggleServices()" id="servicesBtn">
+        <span>Услуги</span>
+      </button>
+      <button class="nav-menu-btn" onclick="toggleMenu()" id="menuBtn">
+        <div class="burger-lines">
+          <span></span><span></span><span></span>
+        </div>
+        <span>Меню</span>
+      </button>
+      <a href="tel:+79990000000" class="nav-phone-btn">+7 (999) 000-00-00</a>
+      <button class="btn-gold" onclick="openModal()">Записаться</button>
+    </div>
+
+    <div class="burger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════ MEGA MENU ═══════════ -->
+<div class="mega-menu-overlay" id="megaMenu">
+  <button class="mega-close" onclick="toggleMenu()">✕</button>
+  <div class="mega-menu-inner">
+    <nav class="mega-menu-nav">
+      <a href="#home">Главная</a>
+      <a href="#about">О студии</a>
+      <a href="#" onclick="return false">Прайс-лист</a>
+      <a href="#works">Наши работы</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+        <div>
+          <p style="font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:20px;">
+            VELOR — детейлинг-студия премиум-класса. Работаем с автомобилями любых классов, от городских до суперкаров. Это демонстрационный текст шаблона.
+          </p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <a href="tel:+79990000000" style="color:var(--gold);font-size:18px;font-weight:700;text-decoration:none;">+7 (999) 000-00-00</a>
+            <span style="font-size:12px;color:var(--gray);">Демо-адрес · до 00:00</span>
+          </div>
+        </div>
+        <div>
+          <p class="footer-nav-title">Социальные сети</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <a href="#" style="padding:8px 16px;border:1px solid var(--border);border-radius:6px;color:var(--lgray);text-decoration:none;font-size:12px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--lgray)'">Telegram</a>
+            <a href="#" style="padding:8px 16px;border:1px solid var(--border);border-radius:6px;color:var(--lgray);text-decoration:none;font-size:12px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--lgray)'">WhatsApp</a>
+            <a href="#" style="padding:8px 16px;border:1px solid var(--border);border-radius:6px;color:var(--lgray);text-decoration:none;font-size:12px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--lgray)'">ВКонтакте</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SERVICES MEGA ═══════════ -->
+<div class="services-mega-overlay" id="servicesMega">
+  <button class="mega-close" onclick="toggleServices()">✕</button>
+  <div class="services-mega-grid">
+    <div class="services-mega-col">
+      <h4>Мойка</h4>
+      <a href="#" onclick="return false">Турбо мойка (2 фазы)</a>
+      <a href="#" onclick="return false">Стандартная мойка (3 фазы)</a>
+      <a href="#" onclick="return false">Детейлинг мойка (4 фазы)</a>
+      <a href="#" onclick="return false">Мойка мотоциклов</a>
+    </div>
+    <div class="services-mega-col">
+      <h4>Химчистка &amp; Интерьер</h4>
+      <a href="#" onclick="return false">Детейлинг химчистка салона</a>
+      <a href="#" onclick="return false">Химчистка сидений</a>
+      <a href="#" onclick="return false">Химчистка кузова</a>
+      <a href="#" onclick="return false">Уборка салона</a>
+    </div>
+    <div class="services-mega-col">
+      <h4>Защита &amp; Полировка</h4>
+      <a href="#" onclick="return false">Керамическое покрытие</a>
+      <a href="#" onclick="return false">Жидкое стекло</a>
+      <a href="#" onclick="return false">Глянцевая полировка</a>
+      <a href="#" onclick="return false">Восстановительная полировка</a>
+    </div>
+    <div class="services-mega-col">
+      <h4>Оклейка &amp; Прочее</h4>
+      <a href="#" onclick="return false">Оклейка зон риска</a>
+      <a href="#" onclick="return false">Шумоизоляция</a>
+      <a href="#" onclick="return false">PDR — удаление вмятин</a>
+      <a href="#" onclick="return false">Тонировка</a>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMobile()">✕</button>
+  <a href="#home" onclick="toggleMobile()">Главная</a>
+  <a href="#about" onclick="toggleMobile()">О студии</a>
+  <a href="#works" onclick="toggleMobile()">Работы</a>
+  <a href="#reviews" onclick="toggleMobile()">Отзывы</a>
+  <a href="#contacts" onclick="toggleMobile()">Контакты</a>
+  <a href="#" class="mobile-menu-cta" onclick="toggleMobile(); openModal();">Записаться на услугу</a>
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1400&q=80" alt="" class="hero-car-img">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      <span>Демо-шаблон · детейлинг-студия</span>
+    </div>
+    <h1 class="hero-title">
+      Профессиональный<br>
+      <span class="accent">детейлинг</span><br>
+      вашего авто
+    </h1>
+    <p class="hero-desc">VELOR — Detailing Lab. Возвращаем автомобилю первозданный вид и защищаем его на годы вперёд. Замените этот текст своим — это демонстрационный шаблон.</p>
+    <div class="hero-checks">
+      <span class="hero-check">Мойка</span>
+      <span class="hero-check">Детейлинг</span>
+      <span class="hero-check">Химчистка</span>
+      <span class="hero-check">Полировка</span>
+      <span class="hero-check">Керамика</span>
+      <span class="hero-check">Оклейка</span>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-gold" onclick="openModal()">Оформить заявку</button>
+      <a href="tel:+79990000000" class="btn-outline">+7 (999) 000-00-00</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">5.0</div><div class="stat-label">Рейтинг Яндекс</div></div>
+      <div><div class="stat-num">200+</div><div class="stat-label">Оценок клиентов</div></div>
+      <div><div class="stat-num">до 00:00</div><div class="stat-label">Открыто сегодня</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ WHY US ═══════════ -->
+<section class="why pad-section">
+  <div class="why-inner">
+    <span class="section-label anim">Почему выбирают нас</span>
+    <h2 class="section-title anim">Почему клиенты доверяют <span style="color:var(--gold)">VELOR</span></h2>
+    <div class="why-grid">
+      <div class="why-card anim">
+        <div class="why-icon">🏆</div>
+        <h3>Рейтинг 5.0</h3>
+        <p>200+ оценок на Яндекс Картах. Лучший детейлинг по отзывам реальных клиентов.</p>
+      </div>
+      <div class="why-card anim anim-delay-1">
+        <div class="why-icon">⚗️</div>
+        <h3>Профессиональная химия</h3>
+        <p>Только сертифицированные материалы: Gyeon, Koch Chemie, LeTech, servFaces.</p>
+      </div>
+      <div class="why-card anim anim-delay-2">
+        <div class="why-icon">🔧</div>
+        <h3>Спец. оборудование</h3>
+        <p>Профессиональные машины и инструменты — для результата который видно невооружённым взглядом.</p>
+      </div>
+      <div class="why-card anim">
+        <div class="why-icon">🌿</div>
+        <h3>Безопасные составы</h3>
+        <p>Экологически чистые технологии. Безопасно для вас, вашего автомобиля и окружающей среды.</p>
+      </div>
+      <div class="why-card anim anim-delay-1">
+        <div class="why-icon">👁️</div>
+        <h3>Контроль качества</h3>
+        <p>Строгий контроль на каждом этапе — от приёма до финальной проверки с фонариком.</p>
+      </div>
+      <div class="why-card anim anim-delay-2">
+        <div class="why-icon">🕐</div>
+        <h3>Работаем до полуночи</h3>
+        <p>Открыты ежедневно до 00:00. Удобная запись через WhatsApp, Telegram или телефон.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<section class="services-section pad-section">
+  <div class="services-inner">
+    <span class="section-label anim">Наши услуги</span>
+    <h2 class="section-title anim">Услуги <span style="color:var(--gold)">детейлинг-студии</span></h2>
+    <p class="section-desc anim">Полный спектр услуг по уходу за автомобилем. Цены зависят от класса и размера авто.</p>
+    <div class="services-grid">
+      <a href="#" onclick="return false" class="service-card anim">
+        <div class="service-card-icon">🚿</div>
+        <div class="service-card-body">
+          <div class="service-card-title">Автомойка</div>
+          <div class="service-card-desc">Комплексный уход за кузовом. Турбо, стандартная и детейлинг мойка в 2-4 фазы.</div>
+          <div class="service-card-price">от 1 500 р.</div>
+        </div>
+      </a>
+      <a href="#" onclick="return false" class="service-card anim anim-delay-1">
+        <div class="service-card-icon">🧹</div>
+        <div class="service-card-body">
+          <div class="service-card-title">Химчистка</div>
+          <div class="service-card-desc">Детальная очистка всех элементов салона. Кожа, велюр, ткань — любые материалы.</div>
+          <div class="service-card-price">от 1 500 р.</div>
+        </div>
+      </a>
+      <a href="#" onclick="return false" class="service-card anim anim-delay-2">
+        <div class="service-card-icon">💎</div>
+        <div class="service-card-body">
+          <div class="service-card-title">Керамика</div>
+          <div class="service-card-desc">Защита кузова от внешних воздействий. Профессиональные составы — на годы вперёд.</div>
+          <div class="service-card-price">от 15 000 р.</div>
+        </div>
+      </a>
+      <a href="#" onclick="return false" class="service-card anim">
+        <div class="service-card-icon">✨</div>
+        <div class="service-card-body">
+          <div class="service-card-title">Полировка</div>
+          <div class="service-card-desc">Восстановление блеска и цвета кузова. Глянцевая 2-этапная и восстановительная 3-этапная.</div>
+          <div class="service-card-price">от 14 000 р.</div>
+        </div>
+      </a>
+      <a href="#" onclick="return false" class="service-card anim anim-delay-1">
+        <div class="service-card-icon">🎨</div>
+        <div class="service-card-body">
+          <div class="service-card-title">Оклейка</div>
+          <div class="service-card-desc">Оклейка зон риска, полная оклейка виниловой и полиуретановой плёнкой. Тонировка.</div>
+          <div class="service-card-price">от 1 500 р.</div>
+        </div>
+      </a>
+      <a href="#" onclick="return false" class="service-card anim anim-delay-2">
+        <div class="service-card-icon">🔨</div>
+        <div class="service-card-body">
+          <div class="service-card-title">PDR</div>
+          <div class="service-card-desc">Удаление вмятин без покраски. Paintless Dent Repair — без вреда для лакокрасочного покрытия.</div>
+          <div class="service-card-price">от 2 500 р.</div>
+        </div>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:36px;">
+      <a href="#" onclick="return false" class="btn-gold">Смотреть полный прайс-лист</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ WORKS ═══════════ -->
+<section class="works-section pad-section" id="works">
+  <div class="works-inner">
+    <span class="section-label anim">Портфолио</span>
+    <h2 class="section-title anim">Некоторые из наших <span style="color:var(--gold)">работ</span></h2>
+    <p class="section-desc anim">Работаем с автомобилями любых классов — от городских до суперкаров.</p>
+    <div class="gallery-grid anim">
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1708805282785-77092a1628d3?w=900&q=80" alt="Ferrari — полировка кузова">
+        <div class="gallery-overlay"><span>Ferrari · Полировка кузова</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1728415916907-e91c1db8015c?w=700&q=80" alt="Rolls-Royce — химчистка салона">
+        <div class="gallery-overlay"><span>Rolls-Royce · Химчистка салона</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1619431856706-ca2cc58258f6?w=700&q=80" alt="BMW — детейлинг мойка">
+        <div class="gallery-overlay"><span>BMW · Детейлинг мойка</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1762517280728-87fad4a281bb?w=700&q=80" alt="Porsche 911 — защитное покрытие">
+        <div class="gallery-overlay"><span>Porsche 911 · Защитное покрытие</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1685036765558-56fdade7414f?w=700&q=80" alt="Mercedes — полная детализация">
+        <div class="gallery-overlay"><span>Mercedes · Полная детализация</span></div>
+      </div>
+    </div>
+    <div class="works-cta">
+      <a href="#" onclick="return false" class="btn-outline">Смотреть все работы →</a>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE/AFTER SLIDER SECTION -->
+<section class="ba-section pad-section" id="before-after">
+  <div class="ba-inner">
+    <span class="section-label anim">До и после</span>
+    <h2 class="section-title anim">Результат нашей <span style="color:var(--gold)">работы</span></h2>
+    <p class="section-desc anim">Перетащите разделитель влево или вправо чтобы сравнить результат</p>
+
+    <div class="ba-slider-row anim">
+
+      <div class="ba-card">
+        <div class="ba-label-top"><span class="ba-tag before-tag">До</span><span class="ba-title-tag">Ferrari · Полировка кузова</span><span class="ba-tag after-tag">После</span></div>
+        <div class="ba-slider" data-slider>
+          <img class="ba-img ba-before" src="https://images.unsplash.com/photo-1743045702391-b715df349300?w=800&q=70" alt="До полировки">
+          <div class="ba-after-wrap">
+            <img class="ba-img ba-after" src="https://images.unsplash.com/photo-1708805282785-77092a1628d3?w=800&q=70" alt="После полировки">
+          </div>
+          <div class="ba-handle">
+            <div class="ba-handle-line"></div>
+            <div class="ba-handle-btn">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M6 10L2 6M2 6L6 2M2 6H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 10L18 6M18 6L14 2M18 6H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ba-handle-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-label-top"><span class="ba-tag before-tag">До</span><span class="ba-title-tag">BMW · Детейлинг мойка</span><span class="ba-tag after-tag">После</span></div>
+        <div class="ba-slider" data-slider>
+          <img class="ba-img ba-before" src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=70" alt="До мойки">
+          <div class="ba-after-wrap">
+            <img class="ba-img ba-after" src="https://images.unsplash.com/photo-1619431856706-ca2cc58258f6?w=800&q=70" alt="После мойки">
+          </div>
+          <div class="ba-handle">
+            <div class="ba-handle-line"></div>
+            <div class="ba-handle-btn">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M6 10L2 6M2 6L6 2M2 6H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 10L18 6M18 6L14 2M18 6H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ba-handle-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-label-top"><span class="ba-tag before-tag">До</span><span class="ba-title-tag">Porsche · Защитное покрытие</span><span class="ba-tag after-tag">После</span></div>
+        <div class="ba-slider" data-slider>
+          <img class="ba-img ba-before" src="https://images.unsplash.com/photo-1607206928769-ee295902bae9?w=800&q=70" alt="До покрытия">
+          <div class="ba-after-wrap">
+            <img class="ba-img ba-after" src="https://images.unsplash.com/photo-1762517280728-87fad4a281bb?w=800&q=70" alt="После покрытия">
+          </div>
+          <div class="ba-handle">
+            <div class="ba-handle-line"></div>
+            <div class="ba-handle-btn">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M6 10L2 6M2 6L6 2M2 6H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 10L18 6M18 6L14 2M18 6H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ba-handle-line"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:36px;">
+      <a href="#" onclick="return false" class="btn-outline">Смотреть все работы →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<section class="about-section pad-section" id="about">
+  <div class="about-inner">
+    <div class="about-text anim">
+      <span class="section-label">О компании</span>
+      <h2 class="section-title">VELOR — доверие<br>сотен клиентов<br><span style="color:var(--gold)">каждый день</span></h2>
+      <p style="font-size:14px;color:var(--gray);line-height:1.8;margin-top:16px;">
+        VELOR — современный детейлинг-центр премиум-класса, где каждая деталь вашего автомобиля получает профессиональное внимание. Передовые технологии, качественные материалы и многолетний опыт. (Демонстрационный текст — замените на свой.)
+      </p>
+      <ul>
+        <li>Индивидуальный анализ состояния каждого авто</li>
+        <li>Профессиональные материалы: Gyeon, Koch Chemie, LeTech, servFaces</li>
+        <li>Строгий контроль качества на всех этапах</li>
+        <li>Безопасные составы и современные технологии</li>
+        <li>Фото до и после каждой работы</li>
+      </ul>
+      <div style="margin-top:28px;">
+        <button class="btn-gold" onclick="openModal()">Записаться на услугу</button>
+      </div>
+    </div>
+    <div class="about-imgs anim anim-delay-1">
+      <img src="https://images.unsplash.com/photo-1702863080525-94875b63d1e1?w=700&q=80" alt="Полировка машиной">
+      <img src="https://images.unsplash.com/photo-1632823469850-2f77dd9c7f93?w=700&q=80" alt="Нанесение воска на капот">
+      <img src="https://images.unsplash.com/photo-1602167775536-13b12244040d?w=1000&q=80" alt="Готовый автомобиль после детейлинга">
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ REVIEWS ═══════════ -->
+<section class="reviews-section pad-section" id="reviews">
+  <div class="reviews-inner">
+    <span class="section-label anim">Отзывы клиентов</span>
+    <h2 class="section-title anim">Что говорят наши <span style="color:var(--gold)">клиенты</span></h2>
+    <div class="reviews-grid anim">
+      <div class="review-card">
+        <div class="review-head">
+          <div class="review-avatar av-ya">Я</div>
+          <div>
+            <div class="review-name">Юлия П.</div>
+            <div class="review-platform">Яндекс Карты</div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">Только положительные впечатления: идеально чистая машина, очень все вежливые и дружелюбные! Можно выбрать бесплатно аромат, которым побрызгают на коврики. Отличный сервис!</p>
+        <div class="review-date">Демо-отзыв</div>
+      </div>
+      <div class="review-card">
+        <div class="review-head">
+          <div class="review-avatar av-go">G</div>
+          <div>
+            <div class="review-name">Оксана Б.</div>
+            <div class="review-platform">Google Maps</div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">Привезла машину на мойку, сделали комплекс с кондиционером по всему салону. Результат превзошёл ожидания — автомобиль выглядит как новый!</p>
+        <div class="review-date">Демо-отзыв</div>
+      </div>
+      <div class="review-card">
+        <div class="review-head">
+          <div class="review-avatar av-2g">2</div>
+          <div>
+            <div class="review-name">Клиент VELOR</div>
+            <div class="review-platform">2ГИС</div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">Делал химчистку салона и шиномонтаж. Работа выполнена качественно и в срок. Персонал профессиональный, объяснили все процедуры. Буду возвращаться.</p>
+        <div class="review-date">Демо-отзыв</div>
+      </div>
+    </div>
+    <div class="ratings-bar anim">
+      <div class="rating-item">
+        <div class="rating-name">Яндекс</div>
+        <div class="rating-stars">★★★★★</div>
+        <a href="#" onclick="return false" class="rating-link">Оставить отзыв →</a>
+      </div>
+      <div class="rating-item">
+        <div class="rating-name">Google</div>
+        <div class="rating-stars">★★★★★</div>
+        <a href="#" onclick="return false" class="rating-link">Оставить отзыв →</a>
+      </div>
+      <div class="rating-item">
+        <div class="rating-name">2ГИС</div>
+        <div class="rating-stars">★★★★★</div>
+        <a href="#" onclick="return false" class="rating-link">Оставить отзыв →</a>
+      </div>
+      <div class="rating-item">
+        <div class="rating-name">200+ оценок</div>
+        <div class="rating-stars">★★★★★</div>
+        <a href="#" onclick="return false" class="rating-link">Все отзывы →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA STRIP ═══════════ -->
+<div class="cta-strip">
+  <h2>Готовы записаться на детейлинг?</h2>
+  <p>Оставьте заявку — менеджер свяжется с вами и поможет выбрать услугу</p>
+  <button class="btn-dark" onclick="openModal()">Оформить заявку</button>
+</div>
+
+<!-- ═══════════ CONTACTS ═══════════ -->
+<section id="contacts" class="pad-section" style="background:var(--black);">
+  <div style="max-width:1400px;margin:0 auto;">
+    <span class="section-label anim">Контакты</span>
+    <h2 class="section-title anim">Запишитесь <span style="color:var(--gold)">прямо сейчас</span></h2>
+    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:40px;margin-top:48px;" class="anim">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:calc(16px * var(--radius-mult));padding:36px;">
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);">
+          <div style="width:38px;height:38px;border-radius:calc(8px * var(--radius-mult));background:color-mix(in srgb, var(--gold) 10%, transparent);border:1px solid color-mix(in srgb, var(--gold) 20%, transparent);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📞</div>
+          <div>
+            <div style="font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Телефон</div>
+            <div style="font-size:15px;font-weight:600;"><a href="tel:+79990000000" style="color:var(--white);text-decoration:none;">+7 (999) 000-00-00</a></div>
+            <div style="font-size:12px;color:var(--gray);margin-top:2px;">Ежедневно до 00:00 · демо-номер</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);">
+          <div style="width:38px;height:38px;border-radius:calc(8px * var(--radius-mult));background:color-mix(in srgb, var(--gold) 10%, transparent);border:1px solid color-mix(in srgb, var(--gold) 20%, transparent);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📍</div>
+          <div>
+            <div style="font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Адрес</div>
+            <div style="font-size:15px;font-weight:600;">Демо-адрес, ваш город</div>
+            <div style="font-size:12px;color:var(--gray);margin-top:2px;">Впишите реальный адрес студии</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 0;">
+          <div style="width:38px;height:38px;border-radius:calc(8px * var(--radius-mult));background:color-mix(in srgb, var(--gold) 10%, transparent);border:1px solid color-mix(in srgb, var(--gold) 20%, transparent);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">⭐</div>
+          <div>
+            <div style="font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Рейтинг</div>
+            <div style="font-size:15px;font-weight:600;color:var(--gold);">5.0 · 200+ оценок</div>
+            <div style="font-size:12px;color:var(--gray);margin-top:2px;">Демонстрационные данные</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:20px;">
+          <a href="#" onclick="return false" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:calc(8px * var(--radius-mult));background:#25D366;color:#fff;font-weight:600;font-size:13px;text-decoration:none;">WhatsApp</a>
+          <a href="#" onclick="return false" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:calc(8px * var(--radius-mult));background:#229ED9;color:#fff;font-weight:600;font-size:13px;text-decoration:none;">Telegram</a>
+        </div>
+        <button class="btn-gold" style="width:100%;justify-content:center;margin-top:14px;" onclick="openModal()">Записаться на услугу</button>
+      </div>
+      <div class="map-placeholder">
+        <div class="map-pin">📍</div>
+        <p>Здесь будет встроенная карта с адресом студии — Google Maps или Яндекс.Карты.</p>
+        <p class="map-note">В демо-шаблоне карта не подключена</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="#home" class="nav-logo" style="margin-bottom:16px;display:inline-flex;">
+          <div><span class="nav-logo-text">VELOR</span><span class="nav-logo-sub">Detailing Lab</span></div>
+        </a>
+        <p style="font-size:12px;color:var(--gray);line-height:1.6;margin-top:12px;">Демо-шаблон лендинга для детейлинг-студии.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+        <div>
+          <p class="footer-nav-title">Навигация</p>
+          <nav class="footer-nav">
+            <a href="#home">Главная</a>
+            <a href="#about">О студии</a>
+            <a href="#works">Наши работы</a>
+            <a href="#reviews">Отзывы</a>
+            <a href="#contacts">Контакты</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer-nav-title">Услуги</p>
+          <nav class="footer-nav">
+            <a href="#" onclick="return false">Автомойка</a>
+            <a href="#" onclick="return false">Химчистка</a>
+            <a href="#" onclick="return false">Керамика</a>
+            <a href="#" onclick="return false">Полировка</a>
+            <a href="#" onclick="return false">Оклейка</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer-nav-title">Контакты</p>
+          <nav class="footer-nav">
+            <a href="tel:+79990000000">+7 (999) 000-00-00</a>
+            <a href="#" onclick="return false">Telegram</a>
+            <a href="#" onclick="return false">WhatsApp</a>
+          </nav>
+        </div>
+      </div>
+      <div>
+        <p class="footer-nav-title">Рейтинг</p>
+        <div style="font-size:28px;font-family:var(--font-display);font-weight:700;color:var(--gold);">5.0</div>
+        <div style="color:#f59e0b;font-size:16px;margin:4px 0;">★★★★★</div>
+        <div style="font-size:12px;color:var(--gray);">200+ оценок (демо)</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 VELOR — Detailing Lab
+        <span class="tpl-note">Демо-шаблон · разработка сайтов — [Ваше имя / студия], [ваш telegram/почта]</span>
+      </div>
+      <div class="footer-rating">⭐ 5.0 · 200+ оценок (демо-данные)</div>
+    </div>
+  </div>
+</footer>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>Записаться на услугу</h3>
+    <p>Оставьте заявку — мы свяжемся с вами в ближайшее время</p>
+    <div class="form-group"><label>Ваше имя</label><input type="text" placeholder="Иван Иванов"></div>
+    <div class="form-group"><label>Телефон</label><input type="tel" placeholder="+7 (___) ___-__-__"></div>
+    <div class="form-group">
+      <label>Услуга</label>
+      <select>
+        <option value="">Выберите услугу</option>
+        <option>Автомойка</option>
+        <option>Химчистка салона</option>
+        <option>Керамическое покрытие</option>
+        <option>Полировка кузова</option>
+        <option>Оклейка</option>
+        <option>PDR — удаление вмятин</option>
+        <option>Другая услуга</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Комментарий</label><textarea placeholder="Марка авто, пожелания..."></textarea></div>
+    <button class="btn-gold" style="width:100%;justify-content:center;" onclick="submitForm()">Отправить заявку</button>
+    <p style="font-size:11px;color:var(--gray);text-align:center;margin-top:10px;">
+      Это демо-форма: заявка никуда не отправляется, а сразу показывает статус «отправлено».
+    </p>
+  </div>
+</div>
+
+<script src="constructor.js" defer></script>
+<script>
+// NAV SCROLL
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.padding = window.scrollY > 50 ? '10px 0' : '';
+  const st = document.getElementById('scrollTop');
+  window.scrollY > 400 ? st.classList.add('visible') : st.classList.remove('visible');
+});
+
+// MENUS
+let menuOpen = false, servicesOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('megaMenu').classList.toggle('open', menuOpen);
+  if (servicesOpen) { servicesOpen = false; document.getElementById('servicesMega').classList.remove('open'); }
+}
+function toggleServices() {
+  servicesOpen = !servicesOpen;
+  document.getElementById('servicesMega').classList.toggle('open', servicesOpen);
+  if (menuOpen) { menuOpen = false; document.getElementById('megaMenu').classList.remove('open'); }
+}
+function toggleMobile() { document.getElementById('mobileMenu').classList.toggle('open'); }
+
+// Close on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('#megaMenu') && !e.target.closest('#menuBtn')) {
+    menuOpen = false; document.getElementById('megaMenu').classList.remove('open');
+  }
+  if (!e.target.closest('#servicesMega') && !e.target.closest('#servicesBtn')) {
+    servicesOpen = false; document.getElementById('servicesMega').classList.remove('open');
+  }
+});
+
+// MODAL
+function openModal() { document.getElementById('modal').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow=''; }
+document.getElementById('modal').addEventListener('click', e => { if(e.target===document.getElementById('modal')) closeModal(); });
+
+// Демо-отправка формы: без реального бэкенда.
+// Замените на свой обработчик — Telegram-бота, CRM, Google-таблицу или backend.
+async function submitForm() {
+  const name    = document.querySelector('.modal input[type="text"]').value.trim();
+  const phone   = document.querySelector('.modal input[type="tel"]').value.trim();
+  if (!name || !phone) { alert('Пожалуйста, заполните имя и телефон'); return; }
+  const btn = document.querySelector('.modal .btn-gold');
+  btn.textContent = 'Отправляем...'; btn.disabled = true;
+  await new Promise(r => setTimeout(r, 700)); // имитация запроса к серверу
+  closeModal();
+  showThanks(true);
+  btn.textContent = 'Отправить заявку'; btn.disabled = false;
+}
+function showThanks(ok) {
+  const d = document.createElement('div');
+  d.style.cssText = `position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--dark);border:1px solid ${ok?'var(--gold)':'#e74c3c'};border-radius:16px;padding:40px 48px;z-index:3000;text-align:center;animation:fadeUp 0.3s ease;`;
+  d.innerHTML = ok
+    ? `<div style="font-size:48px;margin-bottom:16px">✓</div><h3 style="font-family:var(--font-display);font-size:20px;margin-bottom:8px">Заявка отправлена!</h3><p style="color:var(--gray);font-size:14px">Демо-режим: реальная заявка никуда не ушла</p>`
+    : `<div style="font-size:48px;margin-bottom:16px">✕</div><h3 style="font-family:var(--font-display);font-size:20px;margin-bottom:8px">Ошибка отправки</h3><p style="color:var(--gray);font-size:14px">Попробуйте ещё раз</p>`;
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(), 4000);
+}
+
+// SCROLL ANIMATIONS
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.1});
+document.querySelectorAll('.anim').forEach(el => obs.observe(el));
+
+// RESPONSIVE about grid
+function fixAboutGrid() {
+  const g = document.querySelector('.about-inner');
+  if (g) g.style.gridTemplateColumns = window.innerWidth < 768 ? '1fr' : '1fr 1fr';
+}
+fixAboutGrid();
+window.addEventListener('resize', fixAboutGrid);
+
+// ═══════════ BEFORE/AFTER SLIDERS ═══════════
+document.querySelectorAll('[data-slider]').forEach(slider => {
+  const afterWrap = slider.querySelector('.ba-after-wrap');
+  const handle    = slider.querySelector('.ba-handle');
+  const afterImg  = afterWrap.querySelector('.ba-after');
+  let dragging = false;
+
+  function getFullWidth() { return slider.getBoundingClientRect().width; }
+
+  function fixAfterImg() {
+    const fw = getFullWidth();
+    afterImg.style.width  = fw + 'px';
+    afterImg.style.minWidth = fw + 'px';
+    afterImg.style.maxWidth = 'none';
+  }
+  fixAfterImg();
+  window.addEventListener('resize', fixAfterImg);
+
+  function setPos(pct) {
+    pct = Math.max(2, Math.min(98, pct));
+    afterWrap.style.width = pct + '%';
+    handle.style.left     = pct + '%';
+    afterImg.style.left   = (-afterWrap.offsetLeft) + 'px';
+  }
+  setPos(50);
+
+  function getPct(clientX) {
+    const rect = slider.getBoundingClientRect();
+    return ((clientX - rect.left) / rect.width) * 100;
+  }
+
+  slider.addEventListener('mousedown', e => { dragging = true; setPos(getPct(e.clientX)); });
+  window.addEventListener('mousemove', e => { if (dragging) setPos(getPct(e.clientX)); });
+  window.addEventListener('mouseup',   () => { dragging = false; });
+
+  slider.addEventListener('touchstart', e => { dragging = true; setPos(getPct(e.touches[0].clientX)); }, {passive:true});
+  window.addEventListener('touchmove',  e => { if (dragging) setPos(getPct(e.touches[0].clientX)); }, {passive:true});
+  window.addEventListener('touchend',   () => { dragging = false; });
+
+  const hintObs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        setTimeout(() => slider.classList.add('hint'), 400);
+        setTimeout(() => slider.classList.remove('hint'), 2100);
+        hintObs.unobserve(slider);
+      }
+    });
+  }, {threshold: 0.5});
+  hintObs.observe(slider);
+});
+</script>
+</body>
+</html>
