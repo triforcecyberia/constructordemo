@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   VELOR — Detailing Lab | Global Styles
+   DEMO — Detailing Lab | Global Styles
    Демо-шаблон с конструктором темы
    ═══════════════════════════════════════ */
 
@@ -82,14 +82,15 @@ h1,h2,h3,h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
   background: color-mix(in srgb, var(--black) 95%, transparent);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  transition: padding 0.3s;
 }
 .navbar-inner {
   display: flex; align-items: center;
   justify-content: space-between;
   padding: 16px 5%;
   max-width: 1400px; margin: 0 auto;
+  transition: padding 0.3s;
 }
+.navbar.scrolled .navbar-inner { padding: 10px 5%; }
 
 /* Logo */
 .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 10px; }
@@ -238,6 +239,15 @@ h1,h2,h3,h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
   transition: color calc(0.2s * var(--dur-mult));
 }
 .mobile-menu a:hover { color: var(--gold); }
+.mobile-phone-link {
+  color: var(--gold) !important;
+  font-family: var(--font-body) !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  border-bottom: none !important;
+  padding-top: 24px !important;
+  padding-bottom: 8px !important;
+}
 .mobile-menu-cta {
   margin-top: 32px;
   background: var(--gold) !important;
@@ -376,11 +386,31 @@ footer {
    ══════════════════ */
 @media (max-width: 1024px) {
   .footer-top { grid-template-columns: 1fr 1fr; }
+  .services-mega-grid { grid-template-columns: repeat(2, 1fr); }
+  .contacts-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .mega-menu-inner { grid-template-columns: 1fr; gap: 28px; }
+  .mega-menu-overlay { padding: 90px 5% 32px; }
 }
 @media (max-width: 768px) {
   .nav-links, .nav-phone-btn { display: none; }
+  /* На мобильном в шапке остаются только логотип и бургер —
+     кнопки «Услуги»/«Меню»/«Записаться» дублируются в выезжающем меню ниже */
+  .nav-actions { display: none; }
+  .navbar-inner { padding: 14px 5%; }
   .burger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
   .burger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; }
   .footer-top { grid-template-columns: 1fr; }
   .modal { padding: 28px 20px; }
+  /* 16px не даёт Safari на iOS зумить страницу при фокусе на поле ввода */
+  .form-group input, .form-group textarea, .form-group select { font-size: 16px; }
+}
+@media (max-width: 480px) {
+  .navbar-inner { padding: 12px 4%; }
+  .nav-logo-text { font-size: 16px; }
+}
+@media (max-width: 640px) {
+  .services-mega-grid { grid-template-columns: 1fr; gap: 24px; }
+  .mega-menu-cols { grid-template-columns: 1fr; gap: 24px; }
 }

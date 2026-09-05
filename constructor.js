@@ -8,8 +8,8 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'velor_theme_ctor_v1';
-  var HINT_SEEN_KEY = 'velor_ctor_hint_seen';
+  var STORAGE_KEY = 'demo_theme_ctor_v1';
+  var HINT_SEEN_KEY = 'demo_ctor_hint_seen';
 
   /* ── пресеты цветовой палитры ── */
   var PRESETS = [
@@ -18,7 +18,7 @@
     { id: 'crimson', name: 'Багрянец',    black:'#0c0808', dark:'#151010', card:'#1a1313', card2:'#211818', border:'rgba(255,255,255,0.07)', gold:'#e6465e', gold2:'#f2818f', white:'#f3ecec', gray:'#8a7676', lgray:'#c2a7a7' },
     { id: 'ice',     name: 'Лёд',         black:'#06090d', dark:'#0d1420', card:'#101a29', card2:'#152235', border:'rgba(255,255,255,0.08)', gold:'#38BDF8', gold2:'#7dd3fc', white:'#eef4fb', gray:'#748296', lgray:'#a6b6cc' },
     { id: 'copper',  name: 'Медь',        black:'#0a0806', dark:'#14100c', card:'#1a1410', card2:'#221a14', border:'rgba(255,255,255,0.07)', gold:'#E0A96D', gold2:'#eec293', white:'#f4efe8', gray:'#8a7c6c', lgray:'#c2b09a' },
-    { id: 'daylight',name: 'Дневной',     black:'#f3f1ec', dark:'#ffffff', card:'#ffffff', card2:'#f6f4ee', border:'rgba(20,20,20,0.09)', gold:'#B8860B', gold2:'#c99a2e', white:'#181614', gray:'#847c6f', lgray:'#5a544a' }
+    { id: 'daylight',name: 'Дневной',     black:'#f5f2ec', dark:'#eee9df', card:'#ffffff', card2:'#f6f3ec', border:'rgba(20,20,20,0.12)', gold:'#B8860B', gold2:'#c99a2e', white:'#181614', gray:'#847c6f', lgray:'#5a544a' }
   ];
 
   var FONT_PAIRS = [

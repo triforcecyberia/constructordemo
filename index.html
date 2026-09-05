@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VELOR — Detailing Lab | Демо-шаблон сайта для детейлинг-студий</title>
+<title>DEMO — Detailing Lab | Демо-шаблон сайта для детейлинг-студий</title>
 <meta name="description" content="Демонстрационный шаблон лендинга для детейлинг-центра с встроенным конструктором темы: меняйте цвета, шрифты, скругления и анимации в реальном времени.">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="constructor.css">
@@ -319,7 +319,12 @@
   text-align: center;
   flex: 1;
   padding: 0 8px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.ba-tag { flex-shrink: 0; }
 
 .ba-slider {
   position: relative;
@@ -425,6 +430,10 @@
 .map-placeholder .map-pin { font-size: 34px; }
 .map-placeholder p { font-size: 13px; color: var(--gray); max-width: 260px; line-height: 1.6; }
 .map-placeholder .map-note { font-size: 11px; color: var(--gray); opacity: 0.7; }
+@media (max-width: 640px) {
+  .map-placeholder { min-height: 240px; }
+  .contact-card { padding: 24px !important; }
+}
 </style>
 </head>
 <body>
@@ -434,7 +443,7 @@
   <div class="navbar-inner">
     <a href="#home" class="nav-logo">
       <div>
-        <span class="nav-logo-text">VELOR</span>
+        <span class="nav-logo-text">DEMO</span>
         <span class="nav-logo-sub">Detailing Lab</span>
       </div>
     </a>
@@ -479,10 +488,10 @@
       <a href="#contacts">Контакты</a>
     </nav>
     <div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+      <div class="mega-menu-cols">
         <div>
           <p style="font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:20px;">
-            VELOR — детейлинг-студия премиум-класса. Работаем с автомобилями любых классов, от городских до суперкаров. Это демонстрационный текст шаблона.
+            DEMO — детейлинг-студия премиум-класса. Работаем с автомобилями любых классов, от городских до суперкаров. Это демонстрационный текст шаблона.
           </p>
           <div style="display:flex;flex-direction:column;gap:8px;">
             <a href="tel:+79990000000" style="color:var(--gold);font-size:18px;font-weight:700;text-decoration:none;">+7 (999) 000-00-00</a>
@@ -541,10 +550,12 @@
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" onclick="toggleMobile()">✕</button>
   <a href="#home" onclick="toggleMobile()">Главная</a>
+  <a href="#services" onclick="toggleMobile()">Услуги</a>
   <a href="#about" onclick="toggleMobile()">О студии</a>
   <a href="#works" onclick="toggleMobile()">Работы</a>
   <a href="#reviews" onclick="toggleMobile()">Отзывы</a>
   <a href="#contacts" onclick="toggleMobile()">Контакты</a>
+  <a href="tel:+79990000000" class="mobile-phone-link" onclick="toggleMobile()">+7 (999) 000-00-00</a>
   <a href="#" class="mobile-menu-cta" onclick="toggleMobile(); openModal();">Записаться на услугу</a>
 </div>
 
@@ -563,7 +574,7 @@
       <span class="accent">детейлинг</span><br>
       вашего авто
     </h1>
-    <p class="hero-desc">VELOR — Detailing Lab. Возвращаем автомобилю первозданный вид и защищаем его на годы вперёд. Замените этот текст своим — это демонстрационный шаблон.</p>
+    <p class="hero-desc">DEMO — Detailing Lab. Возвращаем автомобилю первозданный вид и защищаем его на годы вперёд. Замените этот текст своим — это демонстрационный шаблон.</p>
     <div class="hero-checks">
       <span class="hero-check">Мойка</span>
       <span class="hero-check">Детейлинг</span>
@@ -588,7 +599,7 @@
 <section class="why pad-section">
   <div class="why-inner">
     <span class="section-label anim">Почему выбирают нас</span>
-    <h2 class="section-title anim">Почему клиенты доверяют <span style="color:var(--gold)">VELOR</span></h2>
+    <h2 class="section-title anim">Почему клиенты доверяют <span style="color:var(--gold)">DEMO</span></h2>
     <div class="why-grid">
       <div class="why-card anim">
         <div class="why-icon">🏆</div>
@@ -625,7 +636,7 @@
 </section>
 
 <!-- ═══════════ SERVICES ═══════════ -->
-<section class="services-section pad-section">
+<section class="services-section pad-section" id="services">
   <div class="services-inner">
     <span class="section-label anim">Наши услуги</span>
     <h2 class="section-title anim">Услуги <span style="color:var(--gold)">детейлинг-студии</span></h2>
@@ -801,9 +812,9 @@
   <div class="about-inner">
     <div class="about-text anim">
       <span class="section-label">О компании</span>
-      <h2 class="section-title">VELOR — доверие<br>сотен клиентов<br><span style="color:var(--gold)">каждый день</span></h2>
+      <h2 class="section-title">DEMO — доверие<br>сотен клиентов<br><span style="color:var(--gold)">каждый день</span></h2>
       <p style="font-size:14px;color:var(--gray);line-height:1.8;margin-top:16px;">
-        VELOR — современный детейлинг-центр премиум-класса, где каждая деталь вашего автомобиля получает профессиональное внимание. Передовые технологии, качественные материалы и многолетний опыт. (Демонстрационный текст — замените на свой.)
+        DEMO — современный детейлинг-центр премиум-класса, где каждая деталь вашего автомобиля получает профессиональное внимание. Передовые технологии, качественные материалы и многолетний опыт. (Демонстрационный текст — замените на свой.)
       </p>
       <ul>
         <li>Индивидуальный анализ состояния каждого авто</li>
@@ -858,7 +869,7 @@
         <div class="review-head">
           <div class="review-avatar av-2g">2</div>
           <div>
-            <div class="review-name">Клиент VELOR</div>
+            <div class="review-name">Клиент DEMO</div>
             <div class="review-platform">2ГИС</div>
           </div>
         </div>
@@ -904,8 +915,8 @@
   <div style="max-width:1400px;margin:0 auto;">
     <span class="section-label anim">Контакты</span>
     <h2 class="section-title anim">Запишитесь <span style="color:var(--gold)">прямо сейчас</span></h2>
-    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:40px;margin-top:48px;" class="anim">
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:calc(16px * var(--radius-mult));padding:36px;">
+    <div class="contacts-grid anim">
+      <div class="contact-card" style="background:var(--card);border:1px solid var(--border);border-radius:calc(16px * var(--radius-mult));padding:36px;">
         <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);">
           <div style="width:38px;height:38px;border-radius:calc(8px * var(--radius-mult));background:color-mix(in srgb, var(--gold) 10%, transparent);border:1px solid color-mix(in srgb, var(--gold) 20%, transparent);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📞</div>
           <div>
@@ -951,7 +962,7 @@
     <div class="footer-top">
       <div>
         <a href="#home" class="nav-logo" style="margin-bottom:16px;display:inline-flex;">
-          <div><span class="nav-logo-text">VELOR</span><span class="nav-logo-sub">Detailing Lab</span></div>
+          <div><span class="nav-logo-text">DEMO</span><span class="nav-logo-sub">Detailing Lab</span></div>
         </a>
         <p style="font-size:12px;color:var(--gray);line-height:1.6;margin-top:12px;">Демо-шаблон лендинга для детейлинг-студии.</p>
       </div>
@@ -993,7 +1004,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">© 2025 VELOR — Detailing Lab
+      <div class="footer-copy">© 2025 DEMO — Detailing Lab
         <span class="tpl-note">Демо-шаблон · разработка сайтов — [Ваше имя / студия], [ваш telegram/почта]</span>
       </div>
       <div class="footer-rating">⭐ 5.0 · 200+ оценок (демо-данные)</div>
@@ -1037,7 +1048,7 @@
 <script>
 // NAV SCROLL
 window.addEventListener('scroll', () => {
-  document.getElementById('navbar').style.padding = window.scrollY > 50 ? '10px 0' : '';
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
   const st = document.getElementById('scrollTop');
   window.scrollY > 400 ? st.classList.add('visible') : st.classList.remove('visible');
 });
