@@ -410,7 +410,7 @@ footer {
   .navbar-inner { padding: 12px 4%; }
   .nav-logo-text { font-size: 16px; }
 }
-@media (max-width: 340px) {
+@media (max-width: 540px) {
   .hero-title { overflow-wrap: break-word; word-break: break-word; }
 }
 @media (max-width: 640px) {
