@@ -48,7 +48,6 @@ body {
 
 /* ── TYPOGRAPHY ── */
 h1,h2,h3,h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
-h1,h2,h3,h4,p { overflow-wrap: break-word; word-break: break-word; }
 
 /* ── BUTTONS ── */
 .btn-gold {
@@ -410,6 +409,9 @@ footer {
 @media (max-width: 480px) {
   .navbar-inner { padding: 12px 4%; }
   .nav-logo-text { font-size: 16px; }
+}
+@media (max-width: 340px) {
+  .hero-title { overflow-wrap: break-word; word-break: break-word; }
 }
 @media (max-width: 640px) {
   .services-mega-grid { grid-template-columns: 1fr; gap: 24px; }
